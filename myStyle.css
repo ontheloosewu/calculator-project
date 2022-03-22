@@ -1,7 +1,23 @@
+body {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
 #container {
     display: flex;
     flex-direction: column;
+    width: 400px;
+    height: 600px;
     align-items: center;
     justify-content: center;
-    margin-top: 300px;
+    margin-top: 100px;
+}
+
+#outerDisplay {
+    height: 35px;
+}
+
+#innerDisplay {
+    height: 55px;
 }

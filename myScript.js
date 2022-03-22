@@ -35,15 +35,32 @@ function operate(operator, firstNum, secondNum){
         return multiply(firstNum, secondNum);
     }
     else{
+        if(secondNum === 0){
+            clearCalc();
+            return alert('You cheeky bastard, you broke the calculator! Resetting..');
+        }
         return divide(firstNum, secondNum);
     }
 }
 
 function computeCurrNums(){
-    let result = operate(operateWith, parseInt(firstValue), parseInt(currValue));
-    firstValue = result;
+    if(firstValue && !currValue){
+        innerDisplay.textContent = firstValue;
+        return;
+    }
+    let result = operate(operateWith, parseFloat(firstValue), parseFloat(currValue));
+    firstValue = Math.round(result * 100000000) / 100000000;
     currValue = '';
-    innerDisplay.textContent = result;
+    operateWith = '';
+    innerDisplay.textContent = firstValue;
+}
+
+function clearCalc(){
+    firstValue = '';
+    currValue = '';
+    operateWith = '';
+    innerDisplay.textContent = '0';
+    outerDisplay.textContent = '';
 }
 
 numButtons.forEach((button) => {
@@ -62,11 +79,20 @@ numButtons.forEach((button) => {
 
 opButtons.forEach((button) => {
     button.addEventListener('click', () => {
+        if(!firstValue){
+            return;
+        }
         if(firstValue && currValue){
             computeCurrNums();
         }
+        if(!operateWith){
+            outerDisplay.textContent += button.textContent;
+        }
+        else{
+            let temp = outerDisplay.textContent.slice(0, -1);
+            outerDisplay.textContent = temp + button.textContent;
+        }
         operateWith = button.textContent;
-        outerDisplay.textContent += operateWith;
     });
 });
 
@@ -75,10 +101,6 @@ equalButton.addEventListener('click', () => {
 });
 
 clearButton.addEventListener('click', () => {
-    firstValue = '';
-    currValue = '';
-    operateWith = '';
-    innerDisplay.textContent = '';
-    outerDisplay.textContent = '';
+    clearCalc();
 });
 
