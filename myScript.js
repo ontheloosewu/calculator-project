@@ -77,9 +77,6 @@ function clearCalc(){
 
 numButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        if(operateWith){
-
-        }
         currValue += button.textContent;
         innerDisplay.textContent = currValue;
     });
@@ -95,7 +92,9 @@ opButtons.forEach((button) => {
         computeCurrNums();
         if(!operateWith){
             outerDisplay.textContent = innerDisplay.textContent + button.textContent;
-            if(!currValue){
+            if(currValue){
+                storedValue = currValue;
+                currValue = '';
                 innerDisplay.textContent = '0';
             }
         }
