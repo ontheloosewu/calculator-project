@@ -1,6 +1,9 @@
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
     margin: 0;
     font-family: 'Trebuchet MS', 'Avantgarde', sans-serif;
 }
@@ -10,7 +13,6 @@ body {
     flex-direction: column;
     width: 400px;
     min-height: 600px;
-    align-items: stretch;
     margin-top: 100px;
     border: 5px solid gray;
     border-radius: 20px;
@@ -72,8 +74,28 @@ button:active {
     background-color: beige;
 }
 
+.operator {
+    background-color: seashell;
+}
+
+.operator:hover {
+    background-color: coral;
+}
+
+#decimal {
+    background-color: white;
+}
+
+#decimal:hover {
+    background-color:blanchedalmond;
+}
+
 #equals {
     background-color: orange;
+}
+
+#equals:hover {
+    background-color: gold;
 }
 
 #clear {
@@ -90,4 +112,34 @@ button:active {
 
 #delete:hover {
     background-color: lightseagreen;
+}
+
+#helpbox {
+    display: flex;
+    text-align: center;
+    height: 50px;
+    line-height: 1.4;
+    font-style: italic;
+    font-weight: 700;
+}
+
+#footer {
+    padding: 20px;
+    background-color: burlywood;
+    display: flex;
+    align-self: stretch;
+    justify-content: center;
+    gap: 20px;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }

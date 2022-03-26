@@ -1,3 +1,4 @@
+const calcPage = document.getElementById('mainpage');
 const numButtons = document.querySelectorAll('.number');
 const opButtons = document.querySelectorAll('.operator');
 const equalButton = document.getElementById('equals');
@@ -6,6 +7,8 @@ const deciButton = document.getElementById('decimal');
 const delButton = document.getElementById('delete');
 const outerDisplay = document.getElementById('outerDisplay');
 const innerDisplay = document.getElementById('innerDisplay');
+const numList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const opList = ['+', '-', '*', '/'];
 let storedValue = '';
 let currValue = '';
 let operateWith = '';
@@ -36,7 +39,7 @@ function operate(operator, firstNum, secondNum){
     else if(operator === '*'){
         return multiply(firstNum, secondNum);
     }
-    else{
+    else if(operator === '÷'){
         return divide(firstNum, secondNum);
     }
 }
@@ -75,6 +78,41 @@ function clearCalc(){
     outerDisplay.textContent = '';
 }
 
+function opButtonFunc(operatorKey){
+    if(!storedValue){
+        if(!currValue) return;
+        storedValue = currValue;
+        currValue = '';
+    }
+    if(operatorKey === '/'){
+        operatorKey = '÷';
+    }
+    computeCurrNums();
+    if(!operateWith){
+        outerDisplay.textContent = innerDisplay.textContent + operatorKey;
+        if(currValue){
+            storedValue = currValue;
+            currValue = '';
+        }
+    }
+    else{
+        let temp = outerDisplay.textContent.slice(0, -1);
+        outerDisplay.textContent = temp + operatorKey;
+    }
+    innerDisplay.textContent = '0';
+    operateWith = operatorKey;
+}
+
+function deletePrevNum(){
+    if(currValue){
+        currValue = currValue.slice(0, -1);
+        innerDisplay.textContent = currValue;
+    }
+    if(!currValue){
+        innerDisplay.textContent = '0';
+    }
+}
+
 numButtons.forEach((button) => {
     button.addEventListener('click', () => {
         currValue += button.textContent;
@@ -84,25 +122,7 @@ numButtons.forEach((button) => {
 
 opButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        if(!storedValue){
-            if(!currValue) return;
-            storedValue = currValue;
-            currValue = '';
-        }
-        computeCurrNums();
-        if(!operateWith){
-            outerDisplay.textContent = innerDisplay.textContent + button.textContent;
-            if(currValue){
-                storedValue = currValue;
-                currValue = '';
-                innerDisplay.textContent = '0';
-            }
-        }
-        else{
-            let temp = outerDisplay.textContent.slice(0, -1);
-            outerDisplay.textContent = temp + button.textContent;
-        }
-        operateWith = button.textContent;
+        opButtonFunc(button.textContent);
     });
 });
 
@@ -122,12 +142,30 @@ deciButton.addEventListener('click', () => {
 });
 
 delButton.addEventListener('click', () => {
-    if(currValue){
-        currValue = currValue.slice(0, -1);
-        innerDisplay.textContent = currValue;
-    }
-    if(!currValue){
-        innerDisplay.textContent = '0';
-    }
+    deletePrevNum();
 });
 
+calcPage.addEventListener('keydown', (event) => {
+    if(numList.includes(event.key)){
+        currValue += event.key;
+        innerDisplay.textContent = currValue;
+    }
+    else if(opList.includes(event.key)){
+        opButtonFunc(event.key);
+    }
+    else if(event.key === '.'){
+        if(!currValue.includes('.')){
+            currValue += '.';
+            innerDisplay.textContent = currValue;
+        }
+    }
+    else if(event.key === 'Backspace'){
+        deletePrevNum();
+    }
+    else if(event.key === 'Escape'){
+        clearCalc();
+    }
+    else if(event.key === '=' || event.key === 'Enter'){
+        computeCurrNums();
+    }
+})
