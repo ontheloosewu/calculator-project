@@ -113,10 +113,29 @@ function deletePrevNum(){
     }
 }
 
+function numKeyFunc(numKeyVal){
+    currValue += numKeyVal;
+    if(parseFloat(currValue) === 0 && !currValue.includes('.')){
+        currValue = '';
+        return;
+    }
+    innerDisplay.textContent = currValue;
+}
+
+function addDecimal(){
+    if(!currValue.includes('.') && (currValue === '' || currValue === '0')){
+        currValue = '0.';
+        innerDisplay.textContent = currValue;
+    }
+    else if(!currValue.includes('.')){
+        currValue += '.';
+        innerDisplay.textContent = currValue;
+    }
+}
+
 numButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        currValue += button.textContent;
-        innerDisplay.textContent = currValue;
+        numKeyFunc(button.textContent);
     });
 });
 
@@ -135,10 +154,7 @@ clearButton.addEventListener('click', () => {
 });
 
 deciButton.addEventListener('click', () => {
-    if(!currValue.includes('.')){
-        currValue += '.';
-        innerDisplay.textContent = currValue;
-    }
+    addDecimal();
 });
 
 delButton.addEventListener('click', () => {
@@ -147,17 +163,13 @@ delButton.addEventListener('click', () => {
 
 calcPage.addEventListener('keydown', (event) => {
     if(numList.includes(event.key)){
-        currValue += event.key;
-        innerDisplay.textContent = currValue;
+        numKeyFunc(event.key);
     }
     else if(opList.includes(event.key)){
         opButtonFunc(event.key);
     }
     else if(event.key === '.'){
-        if(!currValue.includes('.')){
-            currValue += '.';
-            innerDisplay.textContent = currValue;
-        }
+        addDecimal();
     }
     else if(event.key === 'Backspace'){
         deletePrevNum();
